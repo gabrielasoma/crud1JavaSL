@@ -6,6 +6,7 @@ import crud1.empleadosDAL.conexion;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.*;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 //flaticon , iconos
@@ -177,18 +178,36 @@ public class frmEmpleados extends javax.swing.JFrame {
 
     //Boton editar
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        //Copiamos lo mismo del botón agregar
+       //Copiamos lo mismo del botón agregar
         conexion con = new conexion();
         con.conectar();
         empleadosBL oEmpleados=  recuperarDatosGui();
-       
+        
+        //preguntamos si quiere hacer insert
+        int respuesta = JOptionPane.showConfirmDialog(this,"¿Estás seguro de que quieres editar este usuario?","ConfirM",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+        if(respuesta==JOptionPane.YES_OPTION){
+          
+        
         //recupera los datos y ejecuta la sentencia NUEVA LINEA
         String strSentenciaInsert = String.format("UPDATE Empleados SET Nombre='%s', Correo='%s' WHERE ID=%d", oEmpleados.getNombre(),oEmpleados.getCorreo(),oEmpleados.getID());
         
         //Lineas del btn agregar
         con.ejecutarSentenciaSQL(strSentenciaInsert);
+        
+        JOptionPane.showMessageDialog(null, "Se ha editado el registro", "Editar", JOptionPane.INFORMATION_MESSAGE);
         this.mostrarDatosTabla();
         limpiar();
+       
+        System.out.println("Yes");
+      
+        }else if(respuesta==JOptionPane.NO_OPTION){
+            JOptionPane.showMessageDialog(null, "Operación cancelada", "Editar", JOptionPane.ERROR_MESSAGE);
+            limpiar(); 
+            System.out.println("No");
+        }else if(respuesta==JOptionPane.CLOSED_OPTION){
+            limpiar();  
+            System.out.println("Close");
+        }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -196,6 +215,7 @@ public class frmEmpleados extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+         boolean cargando =true;
         conexion con = new conexion();
         con.conectar();//conexion a base de datos, FUNDAMENTAL
        
@@ -209,9 +229,14 @@ public class frmEmpleados extends javax.swing.JFrame {
         String strSentenciaInsert = String.format("INSERT INTO Empleados (ID,Nombre,Correo) "
                 + "VALUES (NULL,'%s','%s')",oEmpleados.getNombre(),oEmpleados.getCorreo());
         
+        
+        
+        //preguntamos si quiere hacer insert
+        int respuesta = JOptionPane.showConfirmDialog(this,"¿Estás seguro de que quieres añadir este usuario?","ConfirM",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+        if(respuesta==JOptionPane.YES_OPTION){
+            
         //insertamos desde la gui y podemos ver los datos en consola
         con.ejecutarSentenciaSQL(strSentenciaInsert);
-        
         
         //caso 2
         //INSERTAR ESTATICA
@@ -234,8 +259,19 @@ public class frmEmpleados extends javax.swing.JFrame {
             System.out.println("Error: "+e);
         }
 
+        JOptionPane.showMessageDialog(null, "Se ha añadido el registro", "Añadir", JOptionPane.INFORMATION_MESSAGE);
+        System.out.println("Yes");
         this.mostrarDatosTabla();
         limpiar();
+         
+        }else if(respuesta==JOptionPane.NO_OPTION){
+            JOptionPane.showMessageDialog(null, "Operación cancelada", "Añadir", JOptionPane.ERROR_MESSAGE);
+            limpiar(); 
+            System.out.println("No");
+        }else if(respuesta==JOptionPane.CLOSED_OPTION){
+            limpiar();  
+            System.out.println("Close");
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     
@@ -258,7 +294,7 @@ public class frmEmpleados extends javax.swing.JFrame {
     }//GEN-LAST:event_tblEmpleadosMouseClicked
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        //Boton borrar
+         //Boton borrar
         //copiamos los datos del boton agregar
         conexion con = new conexion();
         con.conectar();//conexion a base de datos, FUNDAMENTAL
@@ -269,15 +305,32 @@ public class frmEmpleados extends javax.swing.JFrame {
         empleadosBL oEmpleados=  recuperarDatosGui();
         
         //no ponemos el id porque es null
+        
+        int respuesta = JOptionPane.showConfirmDialog(this,"¿Estás seguro de que quieres eliminar este usuario?","ConfirM",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+        if(respuesta==JOptionPane.YES_OPTION){
+        
         //recupera los datos y ejecuta la sentencia CAMBIAMOS ESTA LINEA
         String strSentenciaInsert = String.format("DELETE FROM Empleados WHERE ID=%d",oEmpleados.getID());
         
         //insertamos desde la gui y podemos ver los datos en consola
         con.ejecutarSentenciaSQL(strSentenciaInsert);
         
+        JOptionPane.showMessageDialog(null, "Se ha eliminado el registro", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+        System.out.println("Yes");
         //AÑADIMOS ESTA LINEA
         this.mostrarDatosTabla();
         limpiar();
+
+         
+        }else if(respuesta==JOptionPane.NO_OPTION){
+            JOptionPane.showMessageDialog(null, "Operación cancelada", "Eliminar", JOptionPane.ERROR_MESSAGE);
+            limpiar(); 
+            System.out.println("No");
+        }else if(respuesta==JOptionPane.CLOSED_OPTION){
+            limpiar();  
+            System.out.println("Close");
+        }
+        
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

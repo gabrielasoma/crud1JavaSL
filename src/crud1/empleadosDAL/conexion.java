@@ -11,7 +11,7 @@ import java.sql.*;
 
 
 public class conexion {
-    String url="C:\\Users\\gabri\\.1 dam\\pr\\crud1\\base de datos\\crud1.s3db";
+    String url="C:\\Users\\gabri\\.1 dam\\pr\\crudJava1\\base de datos\\crud1.s3db";
     Connection  conexionN;
     
     
